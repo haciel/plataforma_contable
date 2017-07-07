@@ -1,0 +1,51 @@
+{% extends '@Backend/CRUD/list.html.twig' %}
+{% block create_new_path path('institution_new') %}
+{% block create_new_title 'institution.create_new'|trans %}
+{% block list_body %}
+    <table id="datatable" class="table table-bordered table-striped">
+        <thead>
+        {% block thead %}
+            <tr>
+                <th>#</th>
+                <th>{{ 'institution.name'|trans|title }}</th>
+                <th>{{ 'institution.number_estudent'|trans|title }}</th>
+                <th>{{ 'institution.city_id'|trans|title }}</th>
+                <th>{{ 'institution.enabled'|trans|title }}</th>
+                <th>{{ 'backend.action'|trans|title }}</th>
+            </tr>
+        {% endblock %}
+        </thead>
+        <tfoot>
+        {{ block('thead') }}
+        </tfoot>
+        <tbody>
+        {% for institution in institutions %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ institution.name }}</td>
+                <td>{{ institution.numberEstudent }}</td>
+                <td>{{ institution.cityId.name }}</td>
+                <td>{{ institution.enable|yes_not|raw }}</td>
+                <td class="action">
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-primary flat" href="{{ path('institution_show', { 'id': institution.id }) }}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-success flat" href="{{ path('institution_edit',{'id':institution.id}) }}"><i
+                                        class="fa fa-pencil"></i></a>
+                        </div>
+                        {% form_theme delete_forms[institution.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                        <div class="btn-group">
+                            {{ form(delete_forms[institution.id]) }}
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

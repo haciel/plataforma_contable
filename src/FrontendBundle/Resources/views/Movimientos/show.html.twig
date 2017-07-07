@@ -1,0 +1,421 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+{% block content %}
+    {% set username = app.user.name is defined ? app.user.name : app.user.username %}
+    <div class="container">
+        <section class="content-header text-center">
+            <h1 class="text-white">
+                Asientos Contables
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box box-success">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+                        <a href="{{ close }}" class="close btn-close">&times;</a>
+                        <div class="box-body">
+                            <div class="box-header text-center">
+                                <h3>
+                                    <b>Empresa:</b> {{ empresa.name }}
+                                </h3>
+                            </div>
+                            {{ form_start(form,{attr:{id:'form_movimientos'}}) }}
+                            <div class="well">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        {{ form_row(form.number,{attr:{readonly:'true'}}) }}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{ form_row(form.date) }}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                {{ form_row(form.slipeNumber,{attr:{readonly:'true',class:'slip-number'}}) }}
+                                            </div>
+                                            <div class="col-sm-6">
+                                                {{ form_row(form.slipeId,{attr:{class:'slipe-type'}}) }}
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control search-field" placeholder="Buscar...">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary btn-search"><span
+                                                                    class="fa fa-search"></span></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 padding-top-25">
+                                        {{ form_row(form.description) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-input-small">
+                                <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre de Cuenta</th>
+                                    <th class="text-right">Debe</th>
+                                    <th class="text-right">Haber</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody id="table-form" data-prototype="
+{% filter escape %}
+             {{ include('FrontendBundle:Operation:prototype.html.twig', { 'form': form.operations.vars.prototype }) }}
+         {% endfilter %}">
+                                {% for operation in form.operations %}
+                                    <tr class="row-form">
+                                        <td class="cuenta-name"></td>
+                                        <td>
+                                            {{ form_widget(operation.accountId,{attr:{class:'code-account'}}) }}
+                                        </td>
+                                        <td>
+                                            {{ form_widget(operation.deve,{attr:{class:'debe-observe'}}) }}
+                                        </td>
+                                        <td>
+                                            {{ form_widget(operation.haber,{attr:{class:'haber-observe'}}) }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td></td>
+                                    <td><strong class="pull-right">Totales</strong></td>
+                                    <td class="text-right text-danger"><strong id="total-debe"></strong></td>
+                                    <td class="text-right text-danger"><strong id="total-haber"></strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="pull-right padding-bottom-30">
+                                <a class="btn btn-warning limpiar flat">
+                                    Limpiar
+                                </a>
+                                <a class="btn btn-success validate-operations flat">
+                                    Guardar
+                                </a>
+                                {{ form_widget(form.submit) }}
+                                <a class="btn btn-primary add_operation flat">
+                                    Nuevo
+                                </a>
+                                <a class="btn btn-info flat"
+                                   href="{{ path('movimientosContables_ver',{'id':empresa.id}) }}">
+                                    Ver listado
+                                </a>
+                            </div>
+                            {{ form_widget(form) }}
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        var $collectionHolder;
+        // setup an "add a paquete" link
+        var $addPaqueteLink = $('.add_operation');
+        var $newLinkLi = $('<tr></tr>');
+        var cuentas = [];
+        var slipTypes = [];
+        getAccounts();
+        totales();
+
+        var pathSearch='{{ path('movimientosContables_buscar',{id:empresa.id}) }}';
+        $('.btn-search').click(function(){
+            var param=$('.search-field').val();
+            window.open(pathSearch+'?search='+param);
+        });
+        $.get('{{ path('getSlipNumber',{'id':empresa.id}) }}', function (data) {
+            slipTypes = data;
+            var number = $('.slip-number').val();
+            var id = $('.slipe-type').val();
+            if (number != 0 && number != '') {
+                slipTypes[id] = number;
+            }
+            $('.slip-number').val(slipTypes[id]);
+        });
+        $('.slipe-type').change(function () {
+            var id = $(this).val();
+            $('.slip-number').val(slipTypes[id]);
+        });
+        jQuery(document).ready(function () {
+            // Get the ul that holds the collection of paquetes
+            $collectionHolder = $('#table-form');
+            disabledDebeHaber();
+
+            $('.debe-observe').each(function () {
+                var value = $(this).val();
+                if (value != 0 && value != '') {
+                    $(this).parent().parent().find('.haber-observe').attr('readonly', true);
+                } else {
+                    $(this).parent().parent().find('.haber-observe').attr('readonly', false);
+                }
+            });
+            $('.haber-observe').each(function () {
+                var value = $(this).val();
+                if (value != 0 && value != '') {
+                    $(this).parent().parent().find('.debe-observe').attr('readonly', true);
+                } else {
+                    $(this).parent().parent().find('.debe-observe').attr('readonly', false);
+                }
+            });
+
+            // add a delete link to all of the existing paquete form li elements
+            $collectionHolder.find('tr.row-form').each(function (index, item) {
+                addPaqueteFormDeleteLink($(this));
+            });
+            var antes = -1;
+            var $despues = [];
+            $collectionHolder.find('tr').each(function (index, item) {
+                if ($(this).hasClass('row-form')) {
+                    antes = 0;
+                } else if (antes == 0) {
+                    antes = 1;
+                }
+                if (antes > 0) {
+                    $despues.push($(this));
+                }
+            });
+
+            for (var i in $despues) {
+                $collectionHolder[0].removeChild($despues[i][0]);
+            }
+            // add the "add a paquete" anchor and li to the paquetes ul
+            $collectionHolder.append($newLinkLi);
+            for (var i in $despues) {
+                $collectionHolder.append($despues[i][0]);
+            }
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addPaqueteLink.on('click', function (e) {
+
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new paquete form (see next code block)
+                addPaqueteForm($collectionHolder, $newLinkLi);
+                $('.code-account').change(function () {
+                    getAccountName();
+                });
+            });
+
+        });
+        $('.code-account').change(function () {
+            getAccountName();
+        });
+        function getAccountName() {
+            $('tr.row-form').each(function (index, item) {
+                var code = $(item).find('.code-account')[0];
+                code = $(code).val();
+                var name = cuentas.filter(function (item) {
+                    return item.id == code;
+                });
+                var cuenta = $(item).find('.cuenta-name')[0];
+                if(code!='') {
+                    $(cuenta).text(name[0].code);
+                }else{
+                    $(cuenta).text("");
+                }
+            });
+        }
+
+        $('.debe-observe,.haber-observe').change(function () {
+            totales();
+        });
+        function totales() {
+            var total_debe = 0, total_haber = 0;
+            $('.debe-observe').each(function (index, item) {
+                var debe = parseInt($(this).val());
+                if (!isNaN(debe)) {
+                    total_debe += debe;
+                }
+            });
+            $('.haber-observe').each(function (index, item) {
+                var haber = parseInt($(this).val());
+                if (!isNaN(haber)) {
+                    total_haber += haber;
+                }
+            });
+            $('#total-debe').text(total_debe);
+            $('#total-haber').text(total_haber);
+        }
+
+        function getAccounts() {
+            $.get("{{ path('getAccounts',{'id':empresa.id}) }}", function (data) {
+                cuentas = data;
+                selectUpdate();
+                getAccountName();
+            })
+        }
+
+        function codeContainer(codeFather,codeChild){
+            if(codeFather.length>codeChild.length){
+                return false;
+            }
+            for(var i=0;i<codeFather.length;i++){
+                if(codeFather[i]!=codeChild[i]){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function selectUpdate() {
+            $('.code-account').each(function (indes, item) {
+                var value = $(item).val();
+                $(item).find('option').remove();
+                $(item).append(new Option("- Seleccione -", ""));
+                var exist = false;
+                if(cuentas.length>0) {
+                    var groupCode=cuentas[0].code;
+                    var groupLabel=cuentas[0].name;
+                    var $group=$();
+                    cuentas.forEach(function (cuenta) {
+                        if (cuenta.id == value) {
+                            exist = true;
+                        }
+                        var itemCode=cuenta.code;
+                        if(groupCode==itemCode) {
+                            $group = $('<optgroup />', {label: groupLabel}).appendTo(item);
+                        }else if(codeContainer(groupCode.toString(),itemCode.toString())) {
+                            $group.append($('<option />', {
+                                text: cuenta.name,
+                                value: cuenta.id
+                            }));
+                        }else{
+                            groupCode=itemCode;
+                            groupLabel=cuenta.name;
+                            $group = $('<optgroup />', {label: groupLabel}).appendTo(item);
+                        }
+                    });
+                }
+                var default_value = exist ? value : "";
+
+                $(item).val(default_value);
+            })
+        }
+
+        function addPaqueteForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+            newForm = newForm.replace('div', 'td');
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a paquete" link li
+            var $newFormLi = $('<tr class="row-form"></tr>').append(newForm);
+            var debe = $($newFormLi).find('.debe-observe');
+            $(debe).val(0);
+            var haber = $($newFormLi).find('.haber-observe');
+            $(haber).val(0);
+            $newLinkLi.before($newFormLi);
+            // add a delete link to the new form
+            addPaqueteFormDeleteLink($newFormLi);
+            selectUpdate();
+            getAccountName();
+            $('.debe-observe,.haber-observe').change(function () {
+                totales();
+            });
+            disabledDebeHaber();
+        }
+
+        function disabledDebeHaber() {
+            $('.debe-observe').change(function () {
+                var value = $(this).val();
+                if (value != 0 && value != '') {
+                    $(this).parent().parent().find('.haber-observe').attr('readonly', true);
+                } else {
+                    $(this).parent().parent().find('.haber-observe').attr('readonly', false);
+                }
+            });
+            $('.haber-observe').change(function () {
+                var value = $(this).val();
+                if (value != 0 && value != '') {
+                    $(this).parent().parent().find('.debe-observe').attr('readonly', true);
+                } else {
+                    $(this).parent().parent().find('.debe-observe').attr('readonly', false);
+                }
+            });
+        }
+
+        function addPaqueteFormDeleteLink($paqueteFormLi) {
+            var $removeFormA = $('<td><a class="btn btn-danger"><span class="fa fa-trash-o"></span></a></td>');
+            $paqueteFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the paquete form
+                $paqueteFormLi.remove();
+            });
+        }
+
+        $('.validate-operations').click(function () {
+            var debe = 0;
+            var haber = 0;
+            var selectOk=true;
+            $('.debe-observe').each(function (index, item) {
+                var value = $(item).val();
+                value = parseFloat(value);
+                debe += value;
+                var selectValue=$($(item).parent().parent().find('.code-account')[0]).val();
+                if(value>0 && selectValue==''){
+                    selectOk=false;
+                }
+            });
+            $('.haber-observe').each(function (index, item) {
+                var value = $(item).val();
+                value = parseFloat(value);
+                haber += value;
+                var selectValue=$($(item).parent().parent().find('.code-account')[0]).val();
+                if(value>0 && selectValue==''){
+                    selectOk=false;
+                }
+            });
+            if ($('#backendbundle_accountantMove_description').val() == '') {
+                alertify.error("Debe llenar el campo descripción.");
+            } else if (debe == 0 && haber == 0) {
+                alertify.error("Deben existir como mínimo 2 operaciones.");
+            }else if(!selectOk){
+                alertify.error("Debe elegir una cuenta para realizar la operación.");
+            }
+            else if (debe - haber == 0) {
+                $('#form_movimientos').submit();
+            }
+            else {
+                alertify.error("Las operaciones no están balanceadas.");
+            }
+        });
+
+        $('.limpiar').click(function () {
+            $('#backendbundle_accountantMove_description').val('');
+            $('.debe-observe,.haber-observe').each(function (index, item) {
+                $(item).val(0);
+                $(item).attr('readonly', false);
+
+            });
+            $('#total-debe').text(0);
+            $('#total-haber').text(0);
+            $('.code-account').each(function(index,item){
+                $(item).val('');
+            });
+            $('.cuenta-name').each(function(index,item){
+                $(item).text('');
+            });
+        });
+    </script>
+{% endblock %}

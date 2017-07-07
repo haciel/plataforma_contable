@@ -1,0 +1,14 @@
+services:
+    filter_twig_backend:
+        class: BackendBundle\Twig\AppExtension
+        public: false
+        arguments: [ "@service_container" ]
+        tags:
+            - { name: twig.extension }
+    media_resolver:
+        class: BackendBundle\Useful\MediaResolver
+        arguments: [ "@service_container", "@twig.extension.httpfoundation" ]
+    position:
+        class: BackendBundle\Listeners\UpdatePositionListener
+        tags:
+          - { name: doctrine.event_listener, event: prePersist }

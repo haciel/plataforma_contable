@@ -1,0 +1,5 @@
+{% extends '@Backend/CRUD/edit.html.twig' %}
+{% block create_title %}{{ 'accountType.name'|trans }}{% endblock %}
+{% block create_body %}
+    {{ form(edit_form) }}
+{% endblock %}

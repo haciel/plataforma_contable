@@ -1,0 +1,33 @@
+{% extends 'BackendBundle:CRUD:show.html.twig' %}
+{% block path_edit path('company_edit',{'id':company.id}) %}
+{% block show_body %}
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>{{ 'company.name'|trans }}</th>
+            <td>
+                {{ company.name}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'company.userId'|trans }}</th>
+            <td>
+                {{ company.userId}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'company.institutionId'|trans }}</th>
+            <td>
+                {{ company.institutionId.name}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'company.educationallevelId'|trans }}</th>
+            <td>
+                {{ company.educationallevelId.title}}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

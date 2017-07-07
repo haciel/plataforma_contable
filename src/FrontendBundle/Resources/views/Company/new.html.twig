@@ -1,0 +1,23 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+{% block content %}
+    <div class="container">
+        <section class="content-header">
+            <h1 class="text-white">
+                {{ title }}
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box box-success">
+                {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{ form(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

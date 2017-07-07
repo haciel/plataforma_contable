@@ -1,0 +1,88 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+{% block content %}
+    {% set username = app.user.name is defined ? app.user.name : app.user.username %}
+    <div class="container">
+        <section class="content-header text-center">
+            <h1 class="text-white">
+                Plan de cuentas
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box box-success">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+                        <a href="{{ close }}" class="close btn-close" >&times;</a>
+                        <div class="box-body">
+                            <div class="box-header text-center">
+                                <h3>
+                                    <b>Empresa:</b> {{ empresa.name }}
+                                </h3>
+                            </div>
+                            <div class="well">
+                                <div class="row">
+                                    {{ form_start(form) }}
+                                    <div class="col-sm-3">
+                                        {{ form_row(form.code) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ form_row(form.name) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ form_row(form.accounttypeId) }}
+                                    </div>
+                                    <div class="col-sm-3 padding-top-25">
+                                        {{ form_row(form.submit) }}
+                                    </div>
+                                    {{ form_widget(form) }}
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                            <table id="datatable" class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Código</th>
+                                    <th>Nombre de la cuenta</th>
+                                    <th>Tipo de cuenta</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for cuenta in cuentas %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ cuenta.code }}</td>
+                                        <td class="white-space">{{ cuenta.name|raw }}</td>
+                                        <td>{{ cuenta.accounttypeId.name }}</td>
+                                        <td class="action">
+                                            <div class="btn-group">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-sm btn-success flat"
+                                                       href="{{ path('cuenta_editar',{'id':cuenta.id}) }}"><i
+                                                                class="fa fa-pencil"></i></a>
+                                                </div>
+                                                {% form_theme delete_forms[cuenta.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                                                <div class="btn-group">
+                                                    {{ form(delete_forms[cuenta.id]) }}
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        $(function(){
+//            $('#datatable').DataTable({});
+        });
+    </script>
+{% endblock %}

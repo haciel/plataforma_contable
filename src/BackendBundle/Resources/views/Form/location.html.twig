@@ -1,0 +1,56 @@
+{% block location_widget %}
+
+    {% set select_province_default= '------'~'province.select_province'|trans~'------' %}
+    {% set select_city_default= '------'~'city.select_city'|trans~'------' %}
+
+    {# Select province #}
+    <div class="form-group">
+        <label class="margin-top control-label {% if form.vars.required %}required{% endif %}"
+               for="{{ form.vars.id~'_province' }}">{{ 'city.name_province'|trans }}</label>
+        <select name="{{ form.vars.full_name~'_province' }}" id="{{ form.vars.id~'_province' }}" class="form-control">
+            <option>{{ select_province_default }}</option>
+            {% for c in province %}
+                <option {% if province_select==c.id %}selected{% endif %} value="{{ c.id }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {# Select city #}
+    <div class="form-group">
+        <label class="margin-top control-label {% if form.vars.required %}required{% endif %}"
+               for="{{ form.vars.id }}">{{ 'city.name'|trans }}</label>
+        <select name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" class="form-control">
+            <option>{{ select_city_default }}</option>
+            {% for l in city %}
+                <option {% if value==l.id %}selected{% endif %} value="{{ l.id }}">{{ l }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <script>
+        $(function () {
+
+            var get_city = '{{ path(get_city) }}';
+
+            var province = $('#{{ form.vars.id~'_province' }}');
+            var city = $('#{{ form.vars.id }}');
+            var select_city_default = '{{ select_city_default }}';
+            var select_province_default = '{{ select_province_default }}';
+            var provinceChange = function () {
+                if (province.val()) {
+                    city.attr('disabled', 'disabled');
+                    $.getJSON(get_city, {id_province: province.val()}).done(function (options) {
+                            city.html('<option>' + select_city_default + '</option>');
+                            $.each(options, function (key, val) {
+                                var option = '<option value="' + val.value + '">' + val.name + '</option>';
+                                city.append(option);
+                            });
+                            city.removeAttr('disabled');
+                        }
+                    );
+                }
+            }
+
+            province.on('change', provinceChange);
+        });
+    </script>
+{% endblock %}

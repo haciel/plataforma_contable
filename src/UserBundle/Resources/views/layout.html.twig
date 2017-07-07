@@ -1,0 +1,30 @@
+{% extends '@Backend/backend_base.html.twig' %}
+{% block class_body 'hold-transition login-page' %}
+
+{% block body %}
+<div class="container">
+<section>
+    <div class="pull-right">
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <p>{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+        <a href="{{ path('fos_user_security_logout') }}">
+            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            <i class="fa fa-power-off"></i>
+        </a>
+        </p>
+    {% else %}
+        {% block login_href %}
+            <a href="{{ path('fos_user_security_login') }}">
+                {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                <i class="fa fa-user"></i>
+            </a>
+        {% endblock %}
+    {% endif %}
+    </div>
+</section>
+<section>
+    {% block fos_user_content %}
+    {% endblock fos_user_content %}
+</section>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+    <div class="padding-top-30 text-center text-white">
+        <div class="logo-page">
+            <img class="img-responsive center" src="{{ asset('bundles/frontend/img/alexsys.png') }}">
+        </div>
+        <h3>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</h3>
+        {% if app.session is not empty %}
+            {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
+            {% if targetUrl is not empty %}<p><a
+                        href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
+        {% endif %}
+    </div>
+{% endblock fos_user_content %}

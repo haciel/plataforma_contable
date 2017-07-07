@@ -1,0 +1,12 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+
+    <div class="padding-top-30 text-center text-white">
+        <div class="logo-page">
+            <img class="img-responsive center" src="{{ asset('bundles/frontend/img/alexsys.png') }}">
+        </div>
+
+        <h3>{{ 'registration.check_email'|trans({'%email%': user.email}, 'FOSUserBundle') }}</h3>
+    </div>
+{% endblock fos_user_content %}

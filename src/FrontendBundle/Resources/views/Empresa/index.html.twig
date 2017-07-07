@@ -1,0 +1,72 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% block content %}
+    {% set username = app.user.name is defined ? app.user.name~' '~app.user.lastname : app.user.username %}
+    {% set institution = app.user.institutionId is defined ? app.user.institutionId.name: '' %}
+    {% set col = profe?3:4 %}
+    {% set label = profe?'Profesor':'Estudiante' %}
+    <div class="jumbotron text-center">
+        <h1>Menú Principal</h1>
+        <p>
+            <strong>Empresa: </strong>{{ empresa.name }}
+            <br>
+            <strong>Colegio: </strong>{{ institution }}
+            <br>
+            <strong>{{ label }}: </strong>{{ username }}
+        </p>
+    </div>
+    <section class="container padding-top-40 padding-bottom-40 text-white">
+        <div class="row row-center">
+            <a class="col-sm-3 row-modules">
+                <div class="text-center">
+                    <span class="fa fa-5x fa-archive"></span>
+                </div>
+                <h3 class="text-center text-uppercase">
+                   Inventario
+                </h3>
+            </a>
+            <a class="col-sm-3 row-modules" >
+                <div class="text-center">
+                    <span class="fa fa-5x fa-book"></span>
+                </div>
+                <h3 class="text-center text-uppercase">
+                    Ventas
+                </h3>
+            </a>
+            <a class="col-sm-3 row-modules">
+                <div class="text-center">
+                    <span class="fa fa-5x fa-shopping-cart"></span>
+                </div>
+                <h3 class="text-center text-uppercase">
+                    Compras
+                </h3>
+            </a>
+
+        </div>
+        <div class="row padding-top-30 row-center">
+            <a class="col-sm-3 row-modules">
+                <div class="text-center">
+                    <span class="fa fa-5x fa-building-o"></span>
+                </div>
+                <h3 class="text-center text-uppercase">
+                    SRI
+                </h3>
+            </a>
+            <a class="col-sm-3 row-modules">
+                <div class="text-center">
+                    <span class="fa fa-5x fa-file-text"></span>
+                </div>
+                <h3 class="text-center text-uppercase">
+                    Nóminas
+                </h3>
+            </a>
+            <a class="col-sm-3 row-modules" href="{{ path('reportesContables',{'id':empresa.id}) }}">
+                <div class="text-center">
+                    <span class="fa fa-5x fa-bar-chart-o"></span>
+                </div>
+                <h3 class="text-center text-uppercase">
+                    Reportes Contables
+                </h3>
+            </a>
+        </div>
+    </section>
+{% endblock %}

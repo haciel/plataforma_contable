@@ -1,0 +1,38 @@
+{#{% extends '@Backend/CRUD/edit.html.twig' %}#}
+{#{% block create_title %}{{ 'user.title'|trans }}{% endblock %}#}
+{#{% block create_body %}#}
+    {#{{ form(edit_form) }}#}
+{#{% endblock %}#}
+
+{% extends '@Backend/layout.html.twig' %}
+{% block description_status 'backend.edit'|trans  %}
+{% block content %}
+    {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
+    <div class="box box-success">
+        <div class="box-header">
+            <h3>{% block create_title %}{{ 'user.title'|trans }}{% endblock %}{{' '~ 'backend.edit'|trans }}</h3>
+        </div>
+        <div class="box-body">
+            {% block create_body %}
+                {{ form_start(edit_form) }}
+                {{ form_row(edit_form.name) }}
+                {{ form_row(edit_form.lastname) }}
+                {{ form_row(edit_form.phone) }}
+                {{ form_row(edit_form.dni) }}
+                {{ form_row(edit_form.institutionId) }}
+                {{ form_row(edit_form.educationallevelId) }}
+                {{ form_row(edit_form.cityId) }}
+                {{ form_row(edit_form.username) }}
+                {{ form_row(edit_form.email) }}
+                <div class="form-group">
+                    <label class="control-label required" for="userbundle_user_password">Contraseña</label>
+                    <input type="password"  name="contrasenha" class="form-control">
+                </div>
+                {{ form_row(edit_form.roles) }}
+                {{ form_row(edit_form.enabled) }}
+                {{ form_row(edit_form.locked) }}
+                {{ form_end(edit_form) }}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

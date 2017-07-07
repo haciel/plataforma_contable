@@ -1,0 +1,26 @@
+{% extends 'BackendBundle::layout.html.twig' %}
+{% block description_status 'backend.list'|trans  %}
+{% block content %}
+    {% block content_list %}
+        {% block create_action_list %}<a href="{% block create_new_path %}{% endblock %}" class="btn btn-success flat">{% block create_new_title %}{% endblock %}</a>{% endblock %}
+        <div class="box box-success box-list">
+            <div class="box-header">
+                <h3>{% block list_title %}{% endblock %}{{' '~ 'backend.list'|trans }}</h3>
+            </div>
+            <div class="box-body">
+               {% block list_body %}
+               {% endblock %}
+            </div>
+        </div>
+    {% endblock %}
+        <script>
+            var config={% if datatable_config is defined %}{{ datatable_config|json_encode|raw }}{% else %}{}{% endif %};
+            $(function(){
+                $('#datatable').DataTable(config);
+
+            });
+
+
+        </script>
+
+{% endblock %}

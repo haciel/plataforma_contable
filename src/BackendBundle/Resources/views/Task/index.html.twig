@@ -1,0 +1,55 @@
+{% extends '@Backend/CRUD/list.html.twig' %}
+{% block create_new_path path('task_new') %}
+{% block create_new_title 'task.create_new'|trans %}
+{% block list_body %}
+    <table id="datatable" class="table table-bordered table-striped">
+        <thead>
+        {% block thead %}
+            <tr>
+                <th>#</th>
+                <th>{{ 'task.name'|trans|title }}</th>
+                <th>{{ 'task.desciption'|trans|title }}</th>
+                <th>{{ 'task.dateLimit'|trans|title }}</th>
+                <th>{{ 'company.institutionId'|trans|title }}</th>
+                <th>{{ 'company.educationallevelId'|trans|title }}</th>
+                <th>{{ 'task.userId'|trans|title }}</th>
+                <th>{{ 'backend.action'|trans|title }}</th>
+            </tr>
+        {% endblock %}
+        </thead>
+        <tfoot>
+        {{ block('thead') }}
+        </tfoot>
+        <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.desciption }}</td>
+                <td>{{ task.dateLimit|date('d/m/Y')  }}</td>
+                <td>{{ task.institutionId.name }}</td>
+                <td>{{ task.educationallevelId.title }}</td>
+                <td>{{ task.userId }}</td>
+                <td class="action">
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-primary flat" href="{{ path('task_show', { 'id': task.id }) }}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-success flat" href="{{ path('task_edit',{'id':task.id}) }}"><i
+                                        class="fa fa-pencil"></i></a>
+                        </div>
+                        {% form_theme delete_forms[task.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                        <div class="btn-group">
+                            {{ form(delete_forms[task.id]) }}
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

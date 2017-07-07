@@ -1,0 +1,78 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+
+{% block content %}
+    {% set username = app.user.name is defined ? app.user.name : app.user.username %}
+    <div class="container">
+        <section class="content-header text-center">
+            <h1 class="text-white">
+                Movimientos Contables
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box box-success">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+                        <a href="{{ close }}" class="close btn-close" >&times;</a>
+                        <div class="box-body">
+                            <div class="box-header text-center">
+                                <h3>
+                                    <b>Empresa:</b> {{ empresa.name }}
+                                </h3>
+                            </div>
+                            <div class="padding-bottom-20">
+                                <a class="btn btn-primary flat"
+                                   href="{{ path('movimientosContables_crear',{'id':empresa.id}) }}">
+                                    Crear Movimiento Contable
+                                </a>
+                            </div>
+                            <table id="datatable" class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Fecha</th>
+                                    <th>Tipo de comprobante</th>
+                                    <th>No. de comprobante</th>
+                                    <th>Descripción</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for movimiento in movimientos %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ movimiento.date|date('d/m/Y') }}</td>
+                                        <td>{{ movimiento.slipeId.name }}</td>
+                                        <td>{{ movimiento.number }}</td>
+                                        <td>{{ movimiento.description }}</td>
+                                        <td class="action">
+                                            <div class="btn-group">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-sm btn-success flat"
+                                                       href="{{ path('movimientoContable_show',{'id':movimiento.id}) }}"><i
+                                                                class="fa fa-pencil"></i></a>
+                                                </div>
+                                                {% form_theme delete_forms[movimiento.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                                                <div class="btn-group">
+                                                    {{ form(delete_forms[movimiento.id]) }}
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        $(function(){
+            $('#datatable').DataTable({});
+        });
+    </script>
+{% endblock %}

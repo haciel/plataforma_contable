@@ -1,0 +1,14 @@
+{% extends '@Backend/layout.html.twig' %}
+{% block description_status 'backend.create'|trans  %}
+{% block content %}
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+    <div class="box box-success">
+        <div class="box-header">
+            <h3>{% block create_title %}{% endblock %}{{' '~ 'backend.create'|trans }}</h3>
+        </div>
+        <div class="box-body">
+            {% block create_body %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

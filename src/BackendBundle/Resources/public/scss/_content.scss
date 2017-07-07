@@ -1,0 +1,90 @@
+$directions: top right bottom left;
+@each $direction in $directions {
+  @for $i from 1 through 50 {
+    .padding-#{$direction}-#{$i} {
+      padding-#{$direction}: #{$i}px;
+    }
+  }
+}
+.skin-purple-light .main-header .navbar {
+  background-color: $color-primary;
+}
+.skin-purple-light .main-header .logo {
+  background-color: $color-primary;
+}
+.login-page, .register-page {
+  background: $color-primary !important;
+}
+.login-box-msg{
+  font-size: 20px;
+}
+.user-panel{
+  img{
+    width: 45px;
+  }
+}
+
+.box-list{
+  margin-top: 10px;
+}
+
+.text-white{
+  color: #fff !important;
+}
+
+#fos_user_registration_form_plainPassword{
+  .form-group{
+    float: left;
+    width: calc(50% - 15px);
+    &:last-child{
+      float: right;
+    }
+  }
+}
+
+.login-box{
+  margin: 4% auto !important;
+  .login-logo{
+    font-size: 24px !important;
+    img{
+      padding: 0 40px;
+    }
+    span{
+      color: #fff;
+    }
+  }
+}
+
+.register-box-full{
+  .login-logo{
+    font-size: 24px !important;
+    img{
+      width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    span{
+      color: #fff;
+    }
+  }
+}
+
+.form-city{
+  .form-group{
+    float: left;
+    width: calc(50%);
+    padding-right: 15px;
+    &:last-child{
+      padding-left: 15px;
+      padding-right: 0 !important;
+    }
+  }
+}
+
+.logo-page{
+  img{
+    width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

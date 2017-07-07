@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'bundles/backend/AdminLTE/css/AdminLTE.min.css'
+    'bundles/backend/plugins/datatables/dataTables.bootstrap.css'
+    'bundles/backend/plugins/datatables/select.dataTables.min.css'
+    'bundles/backend/plugins/AlertifyJS/css/alertify.min.css'
+    'bundles/backend/plugins/AlertifyJS/css/themes/default.css'
+    'bundles/backend/plugins/fileupload/css/jquery.fileupload.css'
+    'bundles/backend/AdminLTE/css/skins/skin-purple-light.css'
+    'bundles/backend/plugins/iCheck/piab/green.css'
+    'bundles/backend/plugins/colorpicker/bootstrap-colorpicker.min.css'
+    'bundles/backend/plugins/datepicker/datepicker3.css'
+    'bundles/backend/plugins/loading/dist/loading.min.css'
+    'bundles/backend/plugins/daterangepicker/daterangepicker.css'
+    'bundles/backend/plugins/iCheck/square/blue.css'
+    'bundles/backend/plugins/iCheck/flat/purple.css'
+    'bundles/backend/css/*'
+    'bundles/frontend/css/style.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+{% block class_body 'hold-transition fixed skin-purple-light sidebar-mini'%}
+
+{% block javascripts  %}
+   {{  parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/backend/plugins/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript">
+        window.container.flash_bag="{{ path('flash_bag') }}";
+        window.container.jsonDataTable="{{ asset('bundles/backend/plugins/datatables/language/Spanish.json') }}"
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/backend/plugins/ckeditor/ckeditor.js') }}"></script>
+    {% javascripts
+    'bundles/backend/plugins/jQueryUI/jquery-ui.min.js'
+    'bundles/backend/plugins/fileupload/js/vendor/jquery.ui.widget.js'
+    'bundles/backend/plugins/fileupload/js/jquery.fileupload.js'
+    'bundles/backend/plugins/fileupload/js/jquery.fileupload-process.js'
+    'bundles/backend/plugins/fileupload/js/jquery.fileupload-validate.js'
+    'bundles/backend/AdminLTE/js/app.min.js'
+    'bundles/backend/plugins/iCheck/icheck.min.js'
+    'bundles/backend/plugins/slimScroll/jquery.slimscroll.min.js'
+    'bundles/backend/plugins/datatables/jquery.dataTables.min.js'
+    'bundles/backend/plugins/datatables/dataTables.bootstrap.min.js'
+    'bundles/backend/plugins/colorpicker/bootstrap-colorpicker.min.js'
+    'bundles/backend/plugins/datepicker/bootstrap-datepicker.js'
+    'bundles/backend/plugins/datepicker/locales/bootstrap-datepicker.es.js'
+    'bundles/backend/plugins/FileStyle/bootstrap-filestyle.js'
+    'bundles/backend/plugins/loading/dist/jquery.loading.min.js'
+    'bundles/backend/plugins/daterangepicker/moment-whit-locales.js'
+    'bundles/backend/plugins/daterangepicker/daterangepicker.js'
+    'bundles/backend/plugins/datatables/dataTables.select.min.js'
+    'bundles/backend/js/contable.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

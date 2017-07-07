@@ -1,0 +1,49 @@
+{% extends '@Backend/CRUD/list.html.twig' %}
+{% block create_new_path path('user_new') %}
+    {% block create_new_title 'user.create_new'|trans %}
+{% block list_body %}
+    <table id="datatable" class="table table-bordered table-striped">
+        <thead>
+        {% block thead %}
+            <tr>
+                <th>{{ '#' }}</th>
+                <th>{{ 'user.username'|trans|title }}</th>
+                <th>{{ 'user.email'|trans|title }}</th>
+                <th>{{ 'user.enabled'|trans|title }}</th>
+                <th>{{ 'user.last_login'|trans|title }}</th>
+                <th>{{ 'user.locked'|trans|title }}</th>
+                <th>{{ 'backend.action'|trans|title }}</th>
+            </tr>
+        {% endblock %}
+        </thead>
+        <tfoot>
+        {{ block('thead') }}
+        </tfoot>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ entity.username }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.enabled|yes_not|raw }}</td>
+                <td>{{ entity.lastLogin|date('d/m/Y') }}</td>
+                <td>{{ entity.locked|yes_not|raw }}</td>
+                <td class="action">
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-success flat" href="{{ path('user_edit',{'id':entity.id}) }}"><i
+                                        class="fa fa-pencil"></i></a>
+                        </div>
+                        {% form_theme delete_forms[entity.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                        <div class="btn-group">
+                            {{ form(delete_forms[entity.id]) }}
+                        </div>
+                    </div>
+
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

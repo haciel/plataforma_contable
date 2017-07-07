@@ -1,0 +1,39 @@
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    td {
+        line-height: 2px;
+    }
+    .head td{
+        font-size: 16px;
+        border: 1px solid #000;
+    }
+    .word-white{
+        color: white;
+    }
+    .border-row{
+        border: 1px solid #000;
+    }
+
+</style>
+<h3 class="text-center">PLAN DE CUENTAS</h3>
+<h3 class="text-center">EMPRESA {{ company.name }}</h3>
+
+<br>
+<br>
+<table>
+    <tbody>
+    <tr class="head">
+        <td> CÓDIGO</td>
+        <td colspan="2"> CUENTAS CONTABLES</td>
+    </tr>
+    {% for cuenta in cuentas %}
+        <tr>
+            <td> {{ cuenta.code }}</td>
+            <td colspan="2" {% if cuenta.padre is defined %}class="border-row" {% endif %}> {{ cuenta.name|raw }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

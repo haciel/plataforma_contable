@@ -1,0 +1,99 @@
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    td {
+        line-height: 2px;
+    }
+
+    .border-left td, .border-left {
+        border-left: 1px solid #000;
+    }
+
+    .bordered td {
+        border: 1px solid #000;
+    }
+
+    .border-row td {
+        border: 1px solid #000;
+    }
+
+    .borde-right {
+        border-right: 1px solid #000;
+    }
+
+    .bordered-head td {
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+    }
+
+    .word-white {
+        color: white;
+    }
+</style>
+<h3 class="text-center">BALANCES DE COMPROBACIÓN COMPARATIVO MENSUAL</h3>
+<h3 class="text-center">EMPRESA {{ company.name }}</h3>
+<span class="text-center">
+    Desde {{ desde }} Hasta {{ hasta }}
+</span>
+
+<br>
+<br>
+<table>
+    <tbody>
+    <tr class="bordered-head">
+        <td class="border-left"> Código</td>
+        <td colspan="2"> Descripción</td>
+        {% for mes in meses %}
+            <td class="text-center {% if mes.numero==12 %}borde-right{% endif %}">{{ mes.nombre }} </td>
+        {% endfor %}
+    </tr>
+    {% set saldo=0 %}
+    {% for cuenta in cuentas %}
+        <tr class="border-row">
+            <td> {{ cuenta.code }}</td>
+            <td colspan="2"> {{ cuenta.name|raw }}</td>
+            {% for mes in meses %}
+                <td class="text-right">
+                    {% if cuenta.saldos[mes.numero] is defined %}
+                        {{ cuenta.saldos[mes.numero] | number_format(2) }}
+                    {% endif %}
+                </td>
+            {% endfor %}
+            {#<td class="text-right border-left borde-right">#}
+            {#{{ saldoAux != 0 ? saldoAux | number_format(2) : "" }}#}
+            {#</td>#}
+            {#{% if cuenta.code==4 or cuenta.code==5 or cuenta.code==6 %}#}
+            {#{% set saldo = saldo + cuenta.debe - cuenta.haber %}#}
+            {#{% endif %}#}
+        </tr>
+    {% endfor %}
+    <tr class="border-row">
+        <td colspan="3" class="text-center">RESULTADOS DEL EJERCICIO</td>
+        {% for mes in meses %}
+            <td class="text-right">
+                {% if totales[mes.numero] is defined %}
+                    {{ totales[mes.numero] | number_format(2) }}
+                {% else %}
+                    0.00
+                {% endif %}
+            </td>
+        {% endfor %}
+    </tr>
+    {#<tr class="bordered">#}
+    {#<td colspan="3">#}
+    {#{% if saldo>0 %}#}
+    {#Utilidad del ejercicio#}
+    {#{% else %}#}
+    {#Pérdida del ejercicio#}
+    {#{% endif %}#}
+    {#</td>#}
+    {#<td class="text-right">{{ saldo | number_format(2) }} </td>#}
+    {#</tr>#}
+    </tbody>
+</table>

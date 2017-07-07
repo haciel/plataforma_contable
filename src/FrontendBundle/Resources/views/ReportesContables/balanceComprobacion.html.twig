@@ -1,0 +1,73 @@
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    td {
+        line-height: 2px;
+    }
+    .border-left td,.border-left{
+        border-left: 1px solid #000;
+    }
+    .bordered td{
+        border: 1px solid #000;
+    }
+    .borde-right{
+        border-right: 1px solid #000;
+    }
+    .bordered-head td{
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+    }
+
+</style>
+<h3 class="text-center">BALANCE DE COMPROBACIÓN</h3>
+<h3 class="text-center">EMPRESA {{ company.name }}</h3>
+<span class="text-center">
+    Desde {{ desde }} Hasta {{ hasta }}
+</span>
+
+<br>
+<br>
+<table>
+    <tbody>
+    <tr class="bordered-head">
+        <td class="border-left"> Código</td>
+        <td colspan="2"> Descripción</td>
+        <td class="text-right"> Saldo Anterior</td>
+        <td class="text-right"> Débito</td>
+        <td class="text-right"> Crédito</td>
+        <td class="text-right borde-right"> Saldo Actual</td>
+    </tr>
+    {% set totalDebe=0 %}
+    {% set totalHaber=0 %}
+    {% set saldo=0 %}
+    {% for cuenta in cuentas %}
+        <tr class="border-left">
+            <td class=""> {{ cuenta.code }}</td>
+            <td colspan="2" > {{ cuenta.name }}</td>
+            <td > </td>
+            <td class="text-right">{{ cuenta.debe>0?cuenta.debe:"" }} </td>
+            <td class="text-right">{{ cuenta.haber>0?cuenta.haber:"" }} </td>
+            <td class="text-right borde-right">
+                {% set saldoAux = cuenta.debe - cuenta.haber %}
+                {{ saldoAux != 0 ? saldoAux | number_format(2) : "" }}
+            </td>
+            {% set totalDebe = totalDebe + cuenta.debe %}
+            {% set totalHaber = totalHaber + cuenta.haber %}
+            {% set saldo = saldo + cuenta.debe - cuenta.haber %}
+        </tr>
+    {% endfor %}
+    <tr class="bordered">
+        <td colspan="3"></td>
+        <td class="text-right">0.00</td>
+        <td class="text-right">{{ totalDebe|number_format(2) }} </td>
+        <td class="text-right">{{ totalHaber|number_format(2) }} </td>
+        <td class="text-right">{{ saldo|number_format(2) }} </td>
+    </tr>
+    </tbody>
+</table>

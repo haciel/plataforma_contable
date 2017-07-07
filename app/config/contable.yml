@@ -1,0 +1,10 @@
+parameters:
+    project_name: plataforma_contable
+    first_part: plataforma
+    second_part: contable
+    locale: es
+    directories:
+        global: '../web/upload/'
+        relative: 'upload/'
+        answerTask:
+            files: 'answerTask/files/'

@@ -1,0 +1,97 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+{% block content %}
+    <div class="container">
+        <section class="content padding-top-30">
+            <div class="box box-success">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+
+                        <div class="box-body">
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li class=""><a href="{{ path('profesor',{id:company.id}) }}" >Listado de Estudiantes</a></li>
+                                <li class=""><a href="{{ path('profesor_revision',{id:company.id}) }}" >Revisión</a></li>
+                                <li class="active"><a href="#profile" >Tareas</a></li>
+                            </ul>
+                            <div class="box-header">
+                                <h3 class="page-header">
+                                    Listado de tareas
+                                </h3>
+                            </div>
+                            <div class="well">
+                                <div class="row">
+                                    {{ form_start(form) }}
+                                    <div class="col-sm-3">
+                                        {{ form_row(form.title) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ form_row(form.institutionId) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ form_row(form.educationallevelId) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ form_row(form.dateLimit) }}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {{ form_row(form.desciption) }}
+                                    </div>
+                                    <div class="col-sm-3 padding-top-25">
+                                        {{ form_row(form.submit) }}
+                                    </div>
+                                    {{ form_widget(form) }}
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                            <table id="datatable" class="table table-bordered ">
+                                <thead>
+                                {% block thead %}
+                                    <tr>
+                                        <th>{{ '#' }}</th>
+                                        <th>{{ 'task.title'|trans|title }}</th>
+                                        <th>{{ 'task.desciption'|trans|title }}</th>
+                                        <th>{{ 'task.dateLimit'|trans|title }}</th>
+                                        <th>{{ 'backend.action'|trans|title }}</th>
+                                    </tr>
+                                {% endblock %}
+                                </thead>
+                                <tfoot>
+                                {{ block('thead') }}
+                                </tfoot>
+                                <tbody>
+                                {% for entity in tareas %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ entity.title }}</td>
+                                        <td>{{ entity.desciption }}</td>
+                                        <td>{{ entity.dateLimit|date('d/m/Y') }}</td>
+                                        <td class="action">
+                                            <div class="btn-group">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-sm btn-success flat"
+                                                       href="{{ path('profesor_editar_tarea',{'company':company.id,'id':entity.id}) }}"><i
+                                                                class="fa fa-pencil"></i></a>
+                                                </div>
+                                                {% form_theme delete_forms[entity.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                                                <div class="btn-group">
+                                                    {{ form(delete_forms[entity.id]) }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        $(function () {
+            $('#datatable').DataTable({});
+        });
+    </script>
+{% endblock %}

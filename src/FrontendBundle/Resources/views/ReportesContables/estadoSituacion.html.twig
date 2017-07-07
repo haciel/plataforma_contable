@@ -1,0 +1,51 @@
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    td {
+        line-height: 2px;
+    }
+    .row-black{
+        background-color: #333;
+        color:#fff;
+    }
+</style>
+<h3 class="text-center">ESTADO DE SITUACIÓN</h3>
+<h3 class="text-center">EMPRESA {{ company.name }}</h3>
+<span class="text-center">
+    Desde {{ desde }} Hasta {{ hasta }}
+</span>
+
+<br>
+<br>
+<table border="1px">
+    <tbody>
+    <tr>
+        <td> Código</td>
+        <td colspan="2"> Cuenta</td>
+        <td> Saldo Final</td>
+    </tr>
+    {% set saldo=0 %}
+    {% for cuenta in cuentas %}
+        <tr class="{% if cuenta.code==1 or cuenta.code==2 or cuenta.code==3 %}row-black {% endif %}">
+            <td> {{ cuenta.code }}</td>
+            <td colspan="2"> {{ cuenta.name }}</td>
+            <td class="text-right">{{ cuenta.debe - cuenta.haber }} </td>
+            {% if cuenta.code==2 or cuenta.code==3 %}
+                {% set saldo = saldo + cuenta.debe - cuenta.haber %}
+            {% endif %}
+        </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="3">
+            Pasivo + Patrimonio
+        </td>
+        <td class="text-right">{{ saldo }} </td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,45 @@
+{% extends '@Backend/CRUD/list.html.twig' %}
+{% block create_new_path path('accountType_new') %}
+{% block create_new_title 'accountType.create_new'|trans %}
+{% block list_body %}
+    <table id="datatable" class="table table-bordered table-striped">
+        <thead>
+        {% block thead %}
+            <tr>
+                <th>#</th>
+                <th>{{ 'accountType.name'|trans|title }}</th>
+                <th>{{ 'backend.action'|trans|title }}</th>
+            </tr>
+        {% endblock %}
+        </thead>
+        <tfoot>
+        {{ block('thead') }}
+        </tfoot>
+        <tbody>
+        {% for accountType in accountTypes %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ accountType.name }}</td>
+                <td class="action">
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-primary flat" href="{{ path('accountType_show', { 'id': accountType.id }) }}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-success flat" href="{{ path('accountType_edit',{'id':accountType.id}) }}"><i
+                                        class="fa fa-pencil"></i></a>
+                        </div>
+                        {% form_theme delete_forms[accountType.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                        <div class="btn-group">
+                            {{ form(delete_forms[accountType.id]) }}
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

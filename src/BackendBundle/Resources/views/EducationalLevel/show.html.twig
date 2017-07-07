@@ -1,0 +1,15 @@
+{% extends 'BackendBundle:CRUD:show.html.twig' %}
+{% block path_edit path('educationalLevel_edit',{'id':educationalLevel.id}) %}
+{% block show_body %}
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>{{ 'educationalLevel.name'|trans }}</th>
+            <td>
+                {{ educationalLevel.title}}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

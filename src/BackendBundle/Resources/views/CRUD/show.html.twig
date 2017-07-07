@@ -1,0 +1,26 @@
+{% extends 'BackendBundle::layout.html.twig' %}
+{% block description_status 'backend.show'|trans  %}
+{% block content %}
+    <div class="box box-success">
+        <div class="box-header">
+            <h3 class="pull-left">{% block create_title %}{% endblock %}{{' '~ 'backend.show'|trans }}</h3>
+            <div class="action pull-right">
+                <div class="btn-group">
+                    <div class="btn-group">
+                        <a class="btn btn-sm btn-success flat" href="{% block path_edit %}{% endblock %}"><i
+                                    class="fa fa-pencil"></i></a>
+                    </div>
+                    {% form_theme delete_form 'BackendBundle:CRUD:delete.html.twig' %}
+                    <div class="btn-group">
+                        {{ form(delete_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            {% block show_body %}
+
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

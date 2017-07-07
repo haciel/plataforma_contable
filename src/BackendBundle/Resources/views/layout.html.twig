@@ -1,0 +1,88 @@
+{% extends 'BackendBundle::backend_base.html.twig' %}
+{% block title %}{{ description_page~' '~ block('description_status') }}{% endblock %}
+{% block body %}
+<div class="wrapper">
+    <!-- Main Header -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+            <span class="logo">
+                  <!-- mini logo for sidebar mini 50x50 pixels -->
+                  <span class="logo-mini">
+                      {#<img src="{{ asset('bundles/backend/img/ISOTIPO freedom FINAL.png') }}" class="img-responsive center">#}
+                  </span>
+                            <!-- logo for regular state and mobile devices -->
+                  <span class="logo-lg">
+                      {#<img src="{{ asset('bundles/backend/img/Logo freedom FINAL.png') }}" class="img-responsive">#}
+                  </span>
+            </span>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            {{ render(controller('BackendBundle:Default:navbarRight')) }}
+
+        </nav>
+        <div class="shadow"></div>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        {% set active='' %}
+        {% if active_side_bar is defined  %}
+            {% set active='#'~active_side_bar %}
+        {% endif %}
+        <!-- sidebar: style can be found in sidebar.less -->
+        {{ render(controller('BackendBundle:Default:mainSidebar',{'active':active})) }}
+        <!-- /.sidebar -->
+    </aside>
+
+   {# {% block title name_page %}#}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1 class="text-success">
+                {{ description_page }}
+                <small>{% block description_status %}{% endblock %}</small>
+            </h1>
+            <ol class="breadcrumb">
+               {# {{ macro_breadcrumb.RenderBreadCrumbs(breadcrumbs) }}#}
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            {% block content %}
+
+            {% endblock %}
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!--   Main Footer
+      <footer class="main-footer">
+        &lt;!&ndash; To the right &ndash;&gt;
+        <div class="pull-right hidden-xs">
+          Anything you want
+        </div>
+        &lt;!&ndash; Default to the left &ndash;&gt;
+        <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+      </footer>-->
+
+    <!-- Control Sidebar -->
+
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+
+
+</div>
+    <!-- ./wrapper -->
+{% endblock %}

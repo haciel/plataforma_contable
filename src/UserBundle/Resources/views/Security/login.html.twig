@@ -1,0 +1,58 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% block login 'backend.login_title'|trans %}
+{% block login_href '' %}
+{% block fos_user_content %}
+    <div class="login-box">
+        <div class="login-logo">
+            <img class="img-responsive center logo-black" src="{{ asset('bundles/frontend/img/logo.png') }}">
+            <span>Plataforma Web Contable</span>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">{{ 'backend.login_message'|trans }}</p>
+
+            <form action="{{ path("fos_user_security_check") }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}"
+                           required="required" placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" id="password" name="_password" required="required" class="form-control"
+                           placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <a href="{{ path('fos_user_resetting_request') }}">Olvide mi contraseña</a>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit"
+                                class="btn btn-primary btn-block btn-flat">{{ 'backend.sign_in'|trans }}</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+
+            {# <a href="#">I forgot my password</a><br>
+             <a href="register.html" class="text-center">Register a new membership</a>#}
+
+        </div>
+        <div class="padding-top-10">
+            Si no tienes cuenta puedes <a class="text-white" href="{{ path('fos_user_registration_register') }}">registrarte
+                aquí</a>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+    </script>
+{% endblock fos_user_content %}

@@ -1,0 +1,252 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+
+{% block content %}
+    {% set username = app.user.name is defined ? app.user.name : app.user.username %}
+    <div class="container">
+        <section class="content-header text-center">
+            <h1 class="text-white">
+                Reportes Contables
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box box-success">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+                        <a href="{{ close }}" class="close btn-close" >&times;</a>
+                        <div class="box-body">
+                            <div class="box-header text-center">
+                                <h3>
+                                    <b>Empresa:</b> {{ empresa.name }}
+                                </h3>
+                            </div>
+                            <div class="well flat">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <a class="btn btn-white btn-full" data-toggle="modal" href="#libroDiario"> Libro Diario</a>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <a class="btn btn-primary btn-full"> Libro Mayor</a>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <a class="btn btn-warning btn-full" data-toggle="modal" href="#balanceComprobacion">Balance de Comprobación</a>
+                                    </div>
+                                </div>
+                                <div class="row padding-top-20">
+                                    <div class="col-sm-4">
+                                        <a class="btn btn-info btn-full" data-toggle="modal" href="#estadoResultados"> Estado de Resultados</a>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <a class="btn btn-danger btn-full" data-toggle="modal" href="#estadoSituacion"> Estado de Situación</a>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <a href="#planCuentas" data-toggle="modal"
+                                           class="btn btn-success btn-full">Plan de Cuentas</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="libroDiario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Libro Diario</h4>
+                    </div>
+                    <form action="{{ path('librodiario',{'id':empresa.id}) }}" method="post">
+                        <div class="modal-body clearfix">
+                            <div class="form-group col-sm-4">
+                                <label>Fecha desde</label>
+                                <input type="date" required class="form-control" name="desde">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha hasta</label>
+                                <input type="date" required class="form-control" name="hasta">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit">Visualizar</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
+        <div id="balanceComprobacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Balance de Comprobación</h4>
+                    </div>
+                    <form action="{{ path('balanceComprobacion',{'id':empresa.id}) }}" method="post">
+                        <div class="modal-body clearfix">
+                            <div class="form-group col-sm-6">
+                                <label>Nivel Cta.</label>
+                                <input type="number" max="15" required class="form-control" name="nivel">
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha desde</label>
+                                <input type="date" required class="form-control" name="desde">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha hasta</label>
+                                <input type="date" required class="form-control" name="hasta">
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label class="block">Tipo</label>
+                                <div class="radio inline">
+                                    <label>
+                                        <input type="radio" name="tipo" value="individual" >
+                                       Individual
+                                    </label>
+                                </div>
+                                <div class="radio inline">
+                                    <label>
+                                        <input type="radio" name="tipo" value="mensual" >
+                                        Mensuales
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label class="block">Opción</label>
+                                <div class="radio inline">
+                                    <label>
+                                        <input type="radio" name="opcion" value="todos" >
+                                        Todos
+                                    </label>
+                                </div>
+                                <div class="radio inline">
+                                    <label>
+                                        <input type="radio" name="opcion" value="saldos" >
+                                        Saldos
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit">Visualizar</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
+        <div id="estadoResultados" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Estado de Resultados</h4>
+                    </div>
+                    <form action="{{ path('estadoResultados',{'id':empresa.id}) }}" method="post">
+                        <div class="modal-body clearfix">
+                            <div class="form-group col-sm-6">
+                                <label>Nivel Cta.</label>
+                                <input type="number" max="15" required class="form-control" name="nivel">
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha desde</label>
+                                <input type="date" required class="form-control" name="desde">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha hasta</label>
+                                <input type="date" required class="form-control" name="hasta">
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label class="block">Tipo</label>
+                                <div class="radio inline">
+                                    <label>
+                                        <input type="radio" name="tipo" value="individual" >
+                                        Individual
+                                    </label>
+                                </div>
+                                <div class="radio inline">
+                                    <label>
+                                        <input type="radio" name="tipo" value="mensual" >
+                                        Mensuales
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit">Visualizar</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
+        <div id="estadoSituacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Estado de Situación</h4>
+                    </div>
+                    <form action="{{ path('estadoSituacion',{'id':empresa.id}) }}" method="post">
+                        <div class="modal-body clearfix">
+                            <div class="form-group col-sm-4">
+                                <label>Fecha desde</label>
+                                <input type="date" required class="form-control" name="desde">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha hasta</label>
+                                <input type="date" required class="form-control" name="hasta">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit">Visualizar</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
+        <div id="planCuentas" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Plan de Cuentas</h4>
+                    </div>
+                    <form action="{{ path('planCuentas',{'id':empresa.id}) }}" method="post">
+                        <div class="modal-body clearfix">
+                            <div class="form-group col-sm-4">
+                                <label>Código Inicial</label>
+                                <input type="number" required class="form-control" name="codigoInicial">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Código Final</label>
+                                <input type="number" required class="form-control" name="codigoFinal">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit">Visualizar</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    </div>
+
+{% endblock %}

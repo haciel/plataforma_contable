@@ -1,0 +1,53 @@
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    td {
+        line-height: 2px;
+    }
+</style>
+<h3 class="text-center">LIBRO DIARIO</h3>
+<h3 class="text-center">EMPRESA {{ company.name }}</h3>
+<span class="text-center">
+    Desde {{ desde }} Hasta {{ hasta }}
+</span>
+
+{% for asiento in asientos %}
+    <br>
+    <br>
+    <table border="1px">
+        <tbody>
+        <tr>
+            <td class="text-center" colspan="3">Diario Nro. {{ loop.index }}</td>
+            <td class="text-center" colspan="5">Asiento Nro. {{ asiento.number }}</td>
+            <td class="text-center" colspan="4">{{ asiento.date|date('Y-m-d') }}</td>
+        </tr>
+        <tr>
+            <td colspan="3"> Código</td>
+            <td colspan="5"> Cuenta</td>
+            <td colspan="2"> Débito</td>
+            <td colspan="2"> Crédito</td>
+        </tr>
+        {% set totalDebe=0 %}
+        {% set totalHaber=0 %}
+        {% for operation in asiento.operations %}
+            {% if operation.accountId %}
+                <tr>
+                    <td colspan="3"> {{ operation.accountId.code }}</td>
+                    <td colspan="5"> {{ operation.accountId.name }}</td>
+                    <td colspan="2"> {{ operation.deve }}</td>
+                    <td colspan="2"> {{ operation.haber }}</td>
+                    {% set totalDebe = totalDebe + operation.deve %}
+                    {% set totalHaber = totalHaber + operation.haber %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+        <tr>
+            <td colspan="8"> Detalle: {{ asiento.description }}</td>
+            <td colspan="2"> {{ totalDebe }}</td>
+            <td colspan="2"> {{ totalHaber }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endfor %}

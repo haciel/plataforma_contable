@@ -1,0 +1,33 @@
+{% extends 'BackendBundle:CRUD:show.html.twig' %}
+{% block path_edit path('institution_edit',{'id':institution.id}) %}
+{% block show_body %}
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>{{ 'institution.name'|trans }}</th>
+            <td>
+                {{ institution.name}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'institution.number_estudent'|trans }}</th>
+            <td>
+                {{ institution.numberEstudent}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'institution.city_id'|trans }}</th>
+            <td>
+                {{ institution.cityId.name}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'institution.enabled'|trans }}</th>
+            <td>
+                {{ institution.enable|yes_not|raw }}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

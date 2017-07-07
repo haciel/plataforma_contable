@@ -1,0 +1,21 @@
+{% extends 'BackendBundle:CRUD:show.html.twig' %}
+{% block path_edit path('answerTask_edit',{'id':answerTask.id}) %}
+{% block show_body %}
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>{{ 'answerTask.userId'|trans }}</th>
+            <td>
+                {{ answerTask.userId}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'answerTask.taskId'|trans }}</th>
+            <td>
+                {{ answerTask.taskId.title}}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

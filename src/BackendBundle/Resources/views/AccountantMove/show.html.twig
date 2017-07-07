@@ -1,0 +1,39 @@
+{% extends 'BackendBundle:CRUD:show.html.twig' %}
+{% block path_edit path('accountantMove_edit',{'id':accountantMove.id}) %}
+{% block show_body %}
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>{{ 'accountantMove.slipeNumber'|trans }}</th>
+            <td>
+                {{ accountantMove.slipeNumber}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'accountantMove.companyId'|trans }}</th>
+            <td>
+                {{ accountantMove.companyId.name}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'accountantMove.slipeId'|trans }}</th>
+            <td>
+                {{ accountantMove.slipeId.name}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'accountantMove.date'|trans }}</th>
+            <td>
+                {{ accountantMove.date|date('d/m/Y')}}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'accountantMove.description'|trans }}</th>
+            <td>
+                {{ accountantMove.description}}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,115 @@
+<?php
+
+namespace BackendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * Company
+ *
+ * @ORM\Table(name="company")
+ * @ORM\Entity(repositoryClass="BackendBundle\Repository\CompanyRepository")
+ */
+class Company
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="companies", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\NotNull()
+     */
+    private $userId;
+
+    /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="BackendBundle\Entity\Institution", inversedBy="companies", cascade={"persist"})
+     * @ORM\JoinColumn(name="institution_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\NotNull()
+     */
+    private $institutionId;
+
+    /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="BackendBundle\Entity\EducationalLevel", inversedBy="companies", cascade={"persist"})
+     * @ORM\JoinColumn(name="educationallevel_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\NotNull()
+     */
+    private $educationallevelId;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="BackendBundle\Entity\Task", mappedBy="company_id" ,cascade={"persist"},orphanRemoval=true)
+     */
+    private $tasks;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="BackendBundle\Entity\AccountantMove", mappedBy="company_id" ,cascade={"persist"},orphanRemoval=true)
+     */
+    private $accountansMove;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="BackendBundle\Entity\Account", mappedBy="company_id" ,cascade={"persist"},orphanRemoval=true)
+     */
+    private $accounts;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Company
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+}

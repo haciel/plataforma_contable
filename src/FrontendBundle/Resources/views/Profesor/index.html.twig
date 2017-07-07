@@ -1,0 +1,85 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+{% block content %}
+    <div class="container">
+        <section class="content padding-top-30">
+            <div class="box box-success">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+
+                        <div class="box-body">
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li class="active"><a href="#" >Listado de Estudiantes</a></li>
+                                <li class=""><a href="{{ path('profesor_revision',{id:company.id}) }}" >Revisión</a></li>
+                                <li class=""><a href="{{ path('profesor_tareas',{id:company.id}) }}" >Tareas</a></li>
+                            </ul>
+                            <div class="box-header">
+                                <h3 class="page-header">
+                                    Listado de estudiantes
+                                </h3>
+                            </div>
+                            <table id="datatable" class="table table-bordered ">
+                                <thead>
+                                {% block thead %}
+                                    <tr>
+                                        <th>{{ '#' }}</th>
+                                        <th>{{ 'user.dni'|trans|title }}</th>
+                                        <th>{{ 'user.name'|trans|title }}</th>
+                                        <th>{{ 'user.educationallevelId'|trans|title }}</th>
+                                        <th>{{ 'Activado'|trans|title }}</th>
+                                        <th>{{ 'user.last_login'|trans|title }}</th>
+                                        <th>{{ 'backend.action'|trans|title }}</th>
+                                    </tr>
+                                {% endblock %}
+                                </thead>
+                                <tfoot>
+                                {{ block('thead') }}
+                                </tfoot>
+                                <tbody>
+                                {% for entity in estudiantes %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ entity.dni }}</td>
+                                        <td>{{ entity.name ~ " " ~ entity.lastname }}</td>
+                                        <td>{{ entity.educationallevelId.title }}</td>
+                                        <td>
+                                            {% set si=entity.enabled?'':'disabled-label' %}
+                                            {% set no=entity.enabled?'disabled-label':'' %}
+                                            {% if entity.enabled %}
+                                                <span class="label label-success {{ si }} flat label-right">Si</span>
+                                                <a href="{{ path('profesor_desactivar_estudiante',{'id':entity.id}) }}"
+                                                   class="label label-danger {{ no }} flat label-left">No</a>
+                                            {% else %}
+                                                <a href="{{ path('profesor_activar_estudiante',{'id':entity.id}) }}"
+                                                   class="label label-success {{ si }} flat label-right">Si</a>
+                                                <span class="label label-danger {{ no }} flat label-left">No</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ entity.lastLogin|date('d/m/Y') }}</td>
+                                        <td class="action">
+                                            <div class="btn-group">
+                                                {% form_theme delete_forms[entity.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                                                <div class="btn-group">
+                                                    {{ form(delete_forms[entity.id]) }}
+                                                </div>
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        $(function () {
+            $('#datatable').DataTable({});
+        });
+    </script>
+{% endblock %}

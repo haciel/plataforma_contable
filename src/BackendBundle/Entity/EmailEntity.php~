@@ -1,0 +1,150 @@
+<?php
+
+namespace BackendBundle\Entity;
+
+use App\Model\ToArrayInterface;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\JoinColumns;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
+use mageekguy\atoum\asserters\boolean;
+use Swagger\Annotations as SWG;
+
+use Gedmo\Mapping\Annotation as Gedmo;
+
+/**
+ * @Gedmo\Tree(type="nested")
+ * @Entity(repositoryClass="App\Repository\EmailRepository")
+ * @Table(name="ark_email")
+ */
+class EmailEntity
+{
+
+    /**
+     * @Id
+     * @GeneratedValue(strategy="UUID")
+     * @Column(type="guid")
+     */
+    protected $id;
+
+    /**
+     * @var string $cid
+     * @Column(name="cid", type="string" )
+     */
+    protected $cid;
+
+    /**
+     * @var string $fromName
+     * @Column(name="fromName", type="string" )
+     */
+    protected $fromName;
+
+    /**
+     * @var string $fromEmail
+     * @Column(name="fromEmail", type="string" )
+     */
+    protected $fromEmail;
+
+    /**
+     * @var string $recipientName
+     * @Column(name="recipientName", type="string" )
+     */
+    protected $recipientName;
+
+    /**
+     * @var string $recipientEmail
+     * @Column(name="recipientEmail", type="string" )
+     */
+    protected $recipientEmail;
+
+    /**
+     * @var string $subject
+     * @Column(name="subject", type="string" )
+     */
+    protected $subject;
+
+    /**
+     * @var string $body
+     * @Column(name="body ", type="text" )
+     */
+    protected $body;
+
+    /**
+     * @var bool $isHtml
+     * @Column(name="isHtml ", type="boolean" )
+     */
+    protected $isHtml;
+
+    /**
+     * @var string $headers
+     * @Column(name="headers ", type="text", nullable=true )
+     */
+    protected $headers;
+
+    /**
+     * @var string $attachments
+     * @Column(name="attachments ", type="text", nullable=true )
+     */
+    protected $attachments;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @Column(type="datetime", nullable=true)
+     */
+    protected $createdAt;
+
+    /**
+     * EmailEntity constructor.
+     */
+    public function __construct()
+    {
+        $this->createdAt=new \DateTime("now");
+        $this->isHtml=true;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+
+    public function __toString()
+    {
+        return $this->cid;
+    }
+
+    /**
+     * Return DataTable using in Constroller Rest Response
+     * @return array
+     */
+    public function toArray()
+    {
+        $data = [
+            "id" => $this->getId(),
+//            "name" => $this->getName(),
+//            "createdAt" => $this->getCreatedAt(),
+//            "updatedAt" => $this->getUpdatedAt(),
+//            "nameChangedAt" => $this->getCustomNameChangedAt(),
+        ];
+        foreach ($data as $k => $v) {
+            if (is_null($v) || $v == '')
+                unset($data[$k]);
+            if ($v instanceof \DateTime)
+                $data[$k] = $v->format("Y-m-d H:i:s");
+        }
+        return $data;
+    }
+}

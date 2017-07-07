@@ -1,0 +1,11 @@
+{% macro RenderBreadCrumbs(breadcrumbs) %}
+    <ol class="breadcrumb">
+    {% for b in breadcrumbs %}
+        {% if not b.url is defined %}
+            <li class="active ">{{ b.name|trans }}</li>
+        {% else %}
+            <li><a href="{{ b.url }}">{{ b.name|trans }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ol>
+{% endmacro %}

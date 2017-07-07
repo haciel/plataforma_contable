@@ -1,0 +1,15 @@
+{% extends 'BackendBundle:CRUD:show.html.twig' %}
+{% block path_edit path('country_edit',{'id':country.id}) %}
+{% block show_body %}
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>{{ 'country.name'|trans }}</th>
+            <td>
+                {{ country.name}}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% block document_type_widget %}
+    <div class="modal fade modal-danger" tabindex="-1" role="dialog" id="{{ form.vars.id~'_modal_error' }}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{ 'backend.error'|trans }}</h4>
+                </div>
+                <div class="modal-body text-center">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{ 'backend.close'|trans }}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <div id="{{ form.vars.id~'_document_type' }}" class="document_type">
+        <input name="document" type="file" id="{{ form.vars.id~'_document' }}">
+        {{form_widget(form)}}
+    </div>
+    <script>
+        $(function(){
+            var $file=$('{{ '#'~form.vars.id ~'_document'}}');
+            var loading={
+                start:function(){
+                    $.showLoading({name: 'line-pulse'});
+                },
+                stop:function(){
+                    $.hideLoading();
+                }
+            };
+            $file.filestyle({
+                'buttonText' : '',
+                'iconName' : 'glyphicon-folder-open',
+                'buttonName' : 'btn-info'
+            });
+            if('{{ value }}'!='')
+                $('{{'#'~ form.vars.id~'_document_type .bootstrap-filestyle input' }}').val('{{ value }}');
+            $file.fileupload({
+                acceptFileTypes:{{ acceptFileTypes }},
+                url:'{{path(url_upload) }}',
+                done:function(e,parameters){
+                    loading.stop();
+                    $('{{'#'~ form.vars.id }}').val(parameters.result);
+                    $('{{'#'~ form.vars.id~'_document_type .bootstrap-filestyle input' }}').val(parameters.result);
+                },
+                error:function(){
+                    loading.stop();
+                },
+                progressall:function(){
+                    loading.start();
+                },
+                messages: {
+                    acceptFileTypes: '{{ 'fileupload.acceptFileTypes'|trans }}'
+                }
+
+            }).on('fileuploadprocessalways', function (e, data) {
+                var currentFile = data.files[data.index];
+                if (data.files.error && currentFile.error) {
+                    var modal=$('#{{ form.vars.id~'_modal_error' }}');
+                    modal.find('.modal-body').html(currentFile.error);
+                    modal.modal('show');
+                }
+            });
+        });
+    </script>
+{% endblock %}

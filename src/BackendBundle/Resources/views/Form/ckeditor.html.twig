@@ -1,0 +1,10 @@
+{% block ckeditor_type_widget %}
+    {% spaceless %}
+    {{ form_widget(form) }}
+    {% endspaceless %}
+    <script>
+        $(function ($) {
+            CKEDITOR.replace( '{{ form.vars.full_name }}' );
+        });
+    </script>
+{% endblock %}

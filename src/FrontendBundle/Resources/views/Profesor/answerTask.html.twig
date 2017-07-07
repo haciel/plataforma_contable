@@ -1,0 +1,144 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+{% block content %}
+    <div class="container">
+        <section class="content padding-top-30">
+            <div class="box box-success">
+                {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+                <a href="{{ close }}" class="close btn-close">&times;</a>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box-body revision-tareas">
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li class=""><a href="{{ path('profesor',{id:company.id}) }}">Listado de Estudiantes</a>
+                                </li>
+                                <li class="active"><a href="#">Revisión</a></li>
+                                <li class=""><a href="{{ path('profesor_tareas',{id:company.id}) }}">Tareas</a></li>
+                            </ul>
+                            <div class="box-header">
+                                <h3 class="page-header">
+                                    Tareas Entregadas
+                                </h3>
+                            </div>
+                            <div class="well">
+                                <div class="row">
+                                    <form class="" method="post">
+                                        <div class="form-group col-sm-4">
+                                            <label>Estudiante</label>
+                                            <input type="text" class="form-control" name="estudiante"
+                                                   value="{{ findEstudent }}" placeholder="Nombre de estudiante">
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            <label>Tarea</label>
+                                            <select class="form-control" name="tarea">
+                                                <option value="">- Ninguna -</option>
+                                                {% for tarea in tareas %}
+                                                    <option value="{{ tarea.id }}"
+                                                            {% if findTask==tarea.id %}selected{% endif %}>{{ tarea.title }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group padding-top-25">
+                                            <button class="btn btn-primary" type="submit">Buscar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <table id="datatable" class="table table-bordered ">
+                                <thead>
+                                {% block thead %}
+                                    <tr>
+                                        <th>{{ '#' }}</th>
+                                        <th>{{ 'user.dni'|trans|title }}</th>
+                                        <th>{{ 'user.name'|trans|title }}</th>
+                                        <th>{{ 'answerTask.date'|trans|title }}</th>
+                                        <th>{{ 'answerTask.file'|trans|title }}</th>
+                                        <th>{{ 'Tarea'|trans|title }}</th>
+                                        <th>{{ 'Nota'|trans|title }}</th>
+                                        <th>{{ 'backend.action'|trans|title }}</th>
+                                    </tr>
+                                {% endblock %}
+                                </thead>
+                                <tfoot>
+                                {{ block('thead') }}
+                                </tfoot>
+                                <tbody>
+                                {% for entity in answerTasks %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ entity.userId.dni }}</td>
+                                        <td>{{ entity.userId.name ~ " " ~ entity.userId.lastname }}</td>
+                                        <td>{{ entity.date|date('d/m/Y H:i') }}</td>
+                                        <td>
+                                            <a target="_blank"
+                                               href="{{ asset('upload/answerTask/files/'~entity.file) }}">
+                                                {{ entity.file }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{ entity.taskId.title }}
+                                        </td>
+                                        <td>
+                                            {{ entity.nota }}
+                                        </td>
+                                        <td class="action">
+                                            <div class="btn-group">
+                                                {% form_theme delete_forms[entity.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                                                <div class="btn-group">
+                                                    <a class="btn btn-sm btn-success flat btn-calificar"
+                                                       data-id="{{ entity.id }}">Calificar</a>
+                                                </div>
+                                                <div class="btn-group">
+                                                    {{ form(delete_forms[entity.id]) }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Calificar</h4>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <input type="hidden" class="answer-id" name="answer_id">
+                        <select name="calificacion" class="form-control">
+                            <option value="0">- Seleccione una nota -</option>
+                            {% for index in 1..20 %}
+                                <option>{{ index }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <script>
+        $(function () {
+            $('#datatable').DataTable({});
+            $('.btn-calificar').click(function () {
+                var id = $(this).data('id');
+                $('.answer-id').val(id);
+                $('#myModal').modal('show');
+            })
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,230 @@
+<section class="sidebar">
+    <div class="user-panel">
+        <div class="pull-left">
+            <img class="img-circle" src="{{ asset('bundles/backend/img/avatar_default.png') }}">
+            {# {% if app.user.image %}
+                 <img class="img-circle" src="{{ asset(getAvatar(app.user.email)) }}">
+                 {% else %}
+                     <img class="img-circle" src="{{ asset('bundles/app/img/avatar_default.png') }}">
+                 {% endif %}#}
+        </div>
+        <div class="pull-left info">
+            <p>{{ app.user.username }}</p>
+            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+    </div>
+    <ul data-active-menu="true" class="sidebar-menu" data-active="{{ active }}">
+        <li class="header"></li>
+        <li id="user" class="treeview">
+            <a href="#"><i class="fa fa-user"></i> <span>{{ 'user.title_nav'|trans|title }}</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_user"><a href="{{ path('user_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'user.title_nav'|trans }}</a>
+                </li>
+                <li id="new_user"><a href="{{ path('user_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'user.title'|trans }}</a></li>
+            </ul>
+        </li>
+
+        <li id="institution" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'institution.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_institution"><a href="{{ path('institution_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'institution.title_nav'|trans }}</a>
+                </li>
+                <li id="new_institution"><a href="{{ path('institution_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'institution.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="educationalLevel" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'educationalLevel.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_educationalLevel"><a href="{{ path('educationalLevel_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'educationalLevel.title_nav'|trans }}</a>
+                </li>
+                <li id="new_educationalLevel"><a href="{{ path('educationalLevel_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'educationalLevel.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="country" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'country.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_country"><a href="{{ path('country_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'country.title_nav'|trans }}</a>
+                </li>
+                <li id="new_country"><a href="{{ path('country_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'country.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="province" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'province.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_province"><a href="{{ path('province_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'province.title_nav'|trans }}</a>
+                </li>
+                <li id="new_province"><a href="{{ path('province_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'province.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="city" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'city.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_city"><a href="{{ path('city_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'city.title_nav'|trans }}</a>
+                </li>
+                <li id="new_city"><a href="{{ path('city_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'city.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="company" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'company.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_company"><a href="{{ path('company_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'company.title_nav'|trans }}</a>
+                </li>
+                <li id="new_company"><a href="{{ path('company_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'company.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="task" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'task.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_task"><a href="{{ path('task_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'task.title_nav'|trans }}</a>
+                </li>
+                <li id="new_task"><a href="{{ path('task_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'task.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="answerTask" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'answerTask.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_answerTask"><a href="{{ path('answerTask_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'answerTask.title_nav'|trans }}</a>
+                </li>
+                <li id="new_answerTask"><a href="{{ path('answerTask_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'answerTask.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="slipType" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'slipType.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_slipType"><a href="{{ path('slipType_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'slipType.title_nav'|trans }}</a>
+                </li>
+                <li id="new_slipType"><a href="{{ path('slipType_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'slipType.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="accountantMove" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'accountantMove.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_accountantMove"><a href="{{ path('accountantMove_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'accountantMove.title_nav'|trans }}</a>
+                </li>
+                <li id="new_accountantMove"><a href="{{ path('accountantMove_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'accountantMove.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="operations" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'operations.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_operations"><a href="{{ path('operations_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'operations.title_nav'|trans }}</a>
+                </li>
+                <li id="new_operations"><a href="{{ path('operations_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'operations.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="accountType" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'accountType.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_accountType"><a href="{{ path('accountType_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'accountType.title_nav'|trans }}</a>
+                </li>
+                <li id="new_accountType"><a href="{{ path('accountType_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'accountType.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li id="account" class="treeview">
+            <a href="#"><i class="fa fa-info-circle"></i>
+                <span>{{ 'account.title_nav' |trans }}</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="all_account"><a href="{{ path('account_index') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.list'|trans~' '~'account.title_nav'|trans }}</a>
+                </li>
+                <li id="new_account"><a href="{{ path('account_new') }}"><i
+                                class="fa fa-circle-o"></i>{{ 'backend.create'|trans~' '~'account.title'|trans }}</a></li>
+            </ul>
+        </li>
+    </ul>
+    <!-- /.sidebar-menu -->
+</section>

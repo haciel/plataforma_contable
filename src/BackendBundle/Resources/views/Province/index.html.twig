@@ -1,0 +1,47 @@
+{% extends '@Backend/CRUD/list.html.twig' %}
+{% block create_new_path path('province_new') %}
+{% block create_new_title 'province.create_new'|trans %}
+{% block list_body %}
+    <table id="datatable" class="table table-bordered table-striped">
+        <thead>
+        {% block thead %}
+            <tr>
+                <th>#</th>
+                <th>{{ 'province.name'|trans|title }}</th>
+                <th>{{ 'province.country_id'|trans|title }}</th>
+                <th>{{ 'backend.action'|trans|title }}</th>
+            </tr>
+        {% endblock %}
+        </thead>
+        <tfoot>
+        {{ block('thead') }}
+        </tfoot>
+        <tbody>
+        {% for province in provinces %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ province.name }}</td>
+                <td>{{ province.countryId.name }}</td>
+                <td class="action">
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-primary flat" href="{{ path('province_show', { 'id': province.id }) }}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-success flat" href="{{ path('province_edit',{'id':province.id}) }}"><i
+                                        class="fa fa-pencil"></i></a>
+                        </div>
+                        {% form_theme delete_forms[province.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                        <div class="btn-group">
+                            {{ form(delete_forms[province.id]) }}
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

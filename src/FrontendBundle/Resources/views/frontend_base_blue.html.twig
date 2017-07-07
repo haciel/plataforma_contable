@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+ {% block stylesheets %}
+     {% stylesheets
+     'bundles/backend/bootstrap/css/bootstrap.min.css'
+     'bundles/backend/plugins/AlertifyJS/css/alertify.min.css'
+     'bundles/backend/plugins/AlertifyJS/css/themes/default.css'
+     'bundles/backend/plugins/iCheck/square/blue.css'
+     'bundles/backend/plugins/iCheck/flat/purple.css'
+     'bundles/backend/plugins/font-awesome/css/font-awesome.min.css'
+     'bundles/backend/plugins/fileupload/css/jquery.fileupload.css'
+     'bundles/frontend/css/style.css'
+     filter='cssrewrite' %}
+     <link rel="stylesheet" href="{{ asset_url }}"/>
+     {% endstylesheets %}
+ {% endblock %}
+
+{% block body %}
+    <div class="wrapper body-blue">
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+                {% block content %}
+
+                {% endblock %}
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+    </div>
+    <!-- ./wrapper -->
+    <footer class="content-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <span>© 2017 All Rights Reserved</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        window.container.flash_bag = "{{ path('flash_bag') }}";
+    </script>
+    {% javascripts
+    'bundles/backend/plugins/jQueryUI/jquery-ui.min.js'
+    'bundles/backend/plugins/iCheck/icheck.min.js'
+    'bundles/backend/plugins/fileupload/js/vendor/jquery.ui.widget.js'
+    'bundles/backend/plugins/fileupload/js/jquery.fileupload.js'
+    'bundles/backend/plugins/fileupload/js/jquery.fileupload-process.js'
+    'bundles/backend/plugins/fileupload/js/jquery.fileupload-validate.js'
+    'bundles/backend/plugins/FileStyle/bootstrap-filestyle.js'
+    'bundles/backend/plugins/loading/dist/jquery.loading.min.js'
+    'bundles/backend/js/contable.js'
+    'bundles/frontend/js/app.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}

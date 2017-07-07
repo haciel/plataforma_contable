@@ -1,0 +1,74 @@
+<div class="row padding-top-30">
+    <div class="col-md-8 col-md-offset-2 register-box-full">
+        <div class="login-logo">
+            <img class="img-responsive center logo-black" src="{{ asset('bundles/frontend/img/alexsys.png') }}">
+            <span>Plataforma Web Contable Educativa</span>
+        </div>
+        <div class="register-box-body">
+            <p class="login-box-msg">{{ 'backend.register_message'|trans }}</p>
+
+            <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST"
+                  class="fos_user_registration_register">
+                <div class="row">
+                    <div class="col-sm-4">
+                        {{ form_row(form.name) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_row(form.lastname) }}
+                    </div>
+                    <div class="col-sm-4">
+
+                    </div>
+                </div>
+                <div class="row padding-top-10">
+                    <div class="col-sm-4">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_row(form.phone) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_row(form.dni) }}
+                    </div>
+                </div>
+                <div class="row padding-top-10">
+                    <div class="col-sm-8 form-city">
+                        {{ form_label(form.cityId) }}
+                        {{ form_widget(form.cityId) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_row(form.institutionId) }}
+                    </div>
+                </div>
+                <div class="row padding-top-10">
+                    <div class="col-sm-4">
+                        {{ form_row(form.username) }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.plainPassword) }}
+                    </div>
+                </div>
+                <div class="row padding-top-10">
+                    <div class="col-sm-4">
+                        {{ form_row(form.educationallevelId) }}
+                    </div>
+                </div>
+                {{ form_widget(form._token) }}
+
+                <div class="row padding-top-20">
+
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <input class="btn btn-primary btn-block btn-flat" type="submit"
+                               value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}"/>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+        </div>
+        {{ form_errors(form) }}
+
+        <!-- /.form-box -->
+    </div>
+</div>
+<!-- /.register-box -->

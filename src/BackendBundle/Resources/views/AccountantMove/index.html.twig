@@ -1,0 +1,51 @@
+{% extends '@Backend/CRUD/list.html.twig' %}
+{% block create_new_path path('accountantMove_new') %}
+{% block create_new_title 'accountantMove.create_new'|trans %}
+{% block list_body %}
+    <table id="datatable" class="table table-bordered table-striped">
+        <thead>
+        {% block thead %}
+            <tr>
+                <th>#</th>
+                <th>{{ 'accountantMove.slipeNumber'|trans|title }}</th>
+                <th>{{ 'accountantMove.companyId'|trans|title }}</th>
+                <th>{{ 'accountantMove.slipeId'|trans|title }}</th>
+                <th>{{ 'accountantMove.date'|trans|title }}</th>
+                <th>{{ 'backend.action'|trans|title }}</th>
+            </tr>
+        {% endblock %}
+        </thead>
+        <tfoot>
+        {{ block('thead') }}
+        </tfoot>
+        <tbody>
+        {% for accountantMove in accountantMoves %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ accountantMove.slipeNumber }}</td>
+                <td>{{ accountantMove.companyId.name }}</td>
+                <td>{{ accountantMove.slipeId.name }}</td>
+                <td>{{ accountantMove.date|date('d/m/Y') }}</td>
+                <td class="action">
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-primary flat" href="{{ path('accountantMove_show', { 'id': accountantMove.id }) }}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-success flat" href="{{ path('accountantMove_edit',{'id':accountantMove.id}) }}"><i
+                                        class="fa fa-pencil"></i></a>
+                        </div>
+                        {% form_theme delete_forms[accountantMove.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                        <div class="btn-group">
+                            {{ form(delete_forms[accountantMove.id]) }}
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

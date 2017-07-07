@@ -1,0 +1,15 @@
+{% extends 'BackendBundle:CRUD:show.html.twig' %}
+{% block path_edit path('accountType_edit',{'id':accountType.id}) %}
+{% block show_body %}
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>{{ 'accountType.name'|trans }}</th>
+            <td>
+                {{ accountType.name}}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

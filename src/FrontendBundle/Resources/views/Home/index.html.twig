@@ -1,0 +1,139 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% block content %}
+    {% set username = app.user.name is defined ? app.user.name : app.user.username %}
+    <div class="container">
+        <section class="content-header">
+            <h1 class="text-white">
+                Empresas
+                <small class="pull-right">Bienvenido: {{ username }}</small>
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box box-success">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="box-body">
+                            <div class="box-header">
+                                <h3>
+                                    Listado de Empresas
+                                    <a class="pull-right text-success" href="{{ path('company_new_estudiante') }}">
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                </h3>
+                            </div>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th width="80"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for empresa in empresas %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path('empresa_ver',{'id':empresa.id}) }}">
+                                                {{ empresa.name }}
+                                            </a>
+                                        </td>
+                                        <td class="action">
+                                            <div class="btn-group">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-sm btn-success flat"
+                                                       href="{{ path('company_edit_estudiante',{'id':empresa.id}) }}"><i
+                                                                class="fa fa-pencil"></i></a>
+                                                </div>
+                                                {% form_theme delete_forms[empresa.id] 'BackendBundle:CRUD:delete.html.twig' %}
+                                                <div class="btn-group">
+                                                    {{ form(delete_forms[empresa.id]) }}
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% if empresas is empty %}
+                                    <tr>
+                                        <td colspan="4">
+                                            <label class="text-warning">No tiene empresas creadas.</label>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% if tareas is defined %}
+                        <div class="col-sm-7">
+                            <div class="box-body">
+                                <div class="box-header">
+                                    <h3>
+                                        Tareas Pendientes
+                                    </h3>
+                                </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>{{ 'task.name'|trans|title }}</th>
+                                        <th>{{ 'task.desciption'|trans|title }}</th>
+                                        <th>{{ 'task.dateLimit'|trans|title }}</th>
+                                        <th>{{ 'Respuesta'|trans|title }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for tarea in tareas %}
+                                        <tr>
+                                            <td>{{ tarea.title }}</td>
+                                            <td>{{ tarea.desciption }}</td>
+                                            <td>{{ tarea.dateLimit|date('d/m/Y') }}</td>
+                                            <td><a class="respoder" href="#" data-id="{{ tarea.id }}">Responder</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    {% if tareas is empty %}
+                                        <tr>
+                                            <td colspan="4">
+                                                <label class="text-success">No tiene tareas pendientes.</label>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        {% if form is defined %}
+            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">Respuesta</h4>
+                        </div>
+                        {{ form_start(form) }}
+                        <div class="modal-body">
+                            {{ form_row(form.file) }}
+                            {{ form_widget(form.taskId,{attr:{class:'hidden'}}) }}
+                        </div>
+                        <div class="modal-footer">
+                            {{ form_widget(form.submit) }}
+                            {{ form_widget(form) }}
+                        </div>
+                        {{ form_end(form) }}
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+            <script>
+                $('.respoder').click(function () {
+                    var id = $(this).data('id');
+                    $('#frontendbundle_answerTask_taskId').val(id);
+                    $('#myModal').modal('show');
+                })
+            </script>
+        {% endif %}
+    </div>
+{% endblock %}

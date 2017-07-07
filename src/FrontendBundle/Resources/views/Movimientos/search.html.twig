@@ -1,0 +1,67 @@
+{% extends 'FrontendBundle::frontend_base_blue.html.twig' %}
+{% import 'FrontendBundle:Macros:macro_breadcrumb.html.twig' as macroBreadcrumb %}
+{% block content %}
+    {% set username = app.user.name is defined ? app.user.name : app.user.username %}
+    <div class="container">
+        <section class="content-header text-center">
+            <h1 class="text-white">
+                Asientos Contables
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box box-success">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ macroBreadcrumb.RenderBreadCrumbs(breadcrumb) }}
+                        <a href="{{ close }}" class="close btn-close">&times;</a>
+                        <div class="box-body">
+                            <div class="box-header text-center">
+                                <h3>
+                                    <b>Empresa:</b> {{ empresa.name }}
+                                </h3>
+                            </div>
+                            <div class="well">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <form method="get">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="search" placeholder="Buscar..." value="{{ search }}">
+                                            <span class="input-group-btn">
+                                                        <button class="btn btn-primary btn-search" type="submit"><span
+                                                                    class="fa fa-search"></span></button>
+                                                    </span>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <table  class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Fecha</th>
+                                    <th>Tipo de comprobante</th>
+                                    <th>No. de comprobante</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for movimiento in movimientos %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ movimiento.date|date('d/m/Y') }}</td>
+                                        <td>{{ movimiento.slipeId.name }}</td>
+                                        <td>{{ movimiento.number }}</td>
+                                        <td>{{ movimiento.description }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

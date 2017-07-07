@@ -1,0 +1,10 @@
+{% block button_widget %}
+    {% spaceless %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        <button ok="{{ 'backend.ok'|trans|title }}" cancel="{{ 'backend.cancel'|trans|title }}" delete="{{ "backend.are_you_sure"|trans }}" type="{{ type|default('button') }}" {{ block('button_attributes') }} >
+            <i class="fa fa-trash-o"></i>
+        </button>
+    {% endspaceless %}
+{% endblock button_widget %}
